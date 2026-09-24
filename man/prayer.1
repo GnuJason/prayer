@@ -1,0 +1,92 @@
+.TH PRAYER 1 "September 2026" "prayer 1.0.0" "User Commands"
+.SH NAME
+prayer \- calculate daily Islamic prayer times using libmuslim
+.SH SYNOPSIS
+.B prayer
+.RI [ options ]
+.SH DESCRIPTION
+Print today's Fajr, sunrise, Dhuhr, Asr, Maghrib and Isha for a configured
+location. With no arguments, use the configuration's default location.
+Missing location information is an error. The default method is MWL.
+.SH OPTIONS
+.TP
+.BI "--location " city
+Exact city name in the offline configuration, or a label with --coordinates.
+.TP
+.BI "--config " file
+Use a specific locations JSON file.
+.TP
+.B --auto
+Call geome --json once to obtain approximate IP-based city and coordinates.
+Geome 1.0 has neither city lookup nor timezone output. If absent, the system
+timezone is used with a warning. Use --timezone to override it.
+.TP
+.BI "--coordinates " latitude,longitude
+Use coordinates directly, without geome or configuration.
+.TP
+.BI "--timezone " zone
+Override the timezone with an IANA name in /usr/share/zoneinfo.
+.TP
+.BI "--method " id
+Select mwl, isna, ummalqura, egypt, karachi, kemenag, gulf, or moonsighting.
+Other named upstream methods are accepted. Custom/unknown methods fail.
+.TP
+.B --next
+Print the next prayer's name, date and time. Sunrise is not a next prayer.
+.TP
+.B --current
+Print the current prayer window, or None. Mutually exclusive with --next.
+.TP
+.B --hijri
+Add today's civil tabular Hijri date to human output.
+.TP
+.B --json
+Print the full JSON schedule, including both dates, method, location,
+prayer_dates, next and current. Unavailable values are null.
+.TP
+.BI "--at " seconds
+Use this integer Unix timestamp instead of the current system time.
+.TP
+.B --help
+Print help without network access.
+.TP
+.B --version
+Print the version.
+.SH CONFIGURATION
+Read $XDG_CONFIG_HOME/prayer/locations.json or, if XDG_CONFIG_HOME is unset or
+relative, $HOME/.config/prayer/locations.json. The JSON object contains a
+default city name and a locations object keyed by city name. Each entry
+requires numeric latitude and longitude and a timezone string. Files are
+limited to 64 KiB and are never written by the program. See README for examples.
+.SH CONVENTIONS
+Dates from 1600 through 2200 CE are accepted. Independent upstream ephemeris
+validation covers 1900 through 2100. Times are estimates and round upward
+to whole minutes. Timezone offsets are applied at each event, including DST.
+Dates outside the schedule day are retained in output.
+.PP
+Fajr ends at sunrise. There is no active obligatory-prayer window between
+sunrise and Dhuhr. Other windows end at the next prayer; Isha ends at next
+Fajr for scheduling purposes, not as a religious ruling on preferred times.
+Missing boundaries yield no active window.
+.PP
+High-latitude prayer estimates follow upstream's method policies. Sunrise
+is never substituted and can be unavailable. The Makkah Isha interval is
+the upstream fixed interval; this application adds no Ramadan adjustment.
+Tabular Hijri dates change at civil midnight, not sunset, and can differ
+from official or sighting-based calendars.
+.SH PRIVACY
+Only --auto uses the network. Geome sends an HTTPS request to ipwho.is,
+which receives the public IP. VPNs and proxies can alter the apparent city.
+No location is stored. Invocation is shell-free, capped at 15 seconds and
+64 KiB of output. Offline configurations and help do not access the network.
+.SH EXIT STATUS
+0: success. 2: invalid options. 3: configuration, dependency, data or I/O failure.
+.SH EXAMPLES
+.nf
+prayer --coordinates 32.7765,-79.9311 --timezone America/New_York
+prayer --location 'Charleston, US' --next
+prayer --auto --timezone America/New_York --json
+.fi
+.SH SEE ALSO
+.BR hijri (1),
+.BR geome (1)

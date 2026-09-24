@@ -1,0 +1,20 @@
+{
+  "default": "Charleston, US",
+  "locations": {
+    "Charleston, US": {
+      "latitude": 32.7765,
+      "longitude": -79.9311,
+      "timezone": "America/New_York"
+    },
+    "Jakarta, Indonesia": {
+      "latitude": -6.2088,
+      "longitude": 106.8456,
+      "timezone": "Asia/Jakarta"
+    },
+    "London, UK": {
+      "latitude": 51.5074,
+      "longitude": -0.1278,
+      "timezone": "Europe/London"
+    }
+  }
+}

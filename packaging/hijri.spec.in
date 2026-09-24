@@ -1,0 +1,37 @@
+Name:           hijri
+Version:        1.0.0
+Release:        0
+Summary:        Gregorian and tabular Hijri date converter
+License:        GPL-3.0-or-later
+URL:            @PROJECT_URL@
+Source0:        %{url}/releases/download/v%{version}/%{name}-%{version}.tar.gz
+BuildRequires:  gcc
+BuildRequires:  make
+BuildRequires:  libmuslim-devel
+BuildRequires:  python3
+BuildRequires:  timezone
+
+%description
+Convert dates between the proleptic Gregorian and civil tabular Hijri
+calendars using libmuslim. Includes strict date validation and JSON output.
+
+%prep
+%autosetup
+
+%build
+%make_build TOOLS=hijri SYSTEM_LIBMUSLIM=1 CFLAGS="%{optflags}" LDFLAGS="%{?build_ldflags}"
+
+%check
+%make_build check TOOLS=hijri SYSTEM_LIBMUSLIM=1 CFLAGS="%{optflags}" LDFLAGS="%{?build_ldflags}"
+
+%install
+%make_install TOOLS=hijri SYSTEM_LIBMUSLIM=1 PREFIX=%{_prefix} CFLAGS="%{optflags}" LDFLAGS="%{?build_ldflags}"
+
+%files
+%license LICENSE
+%license libmuslim/hijri.h
+%doc README.md vendor/README.md
+%{_bindir}/hijri
+%{_mandir}/man1/hijri.1%{?ext_man}
+
+%changelog

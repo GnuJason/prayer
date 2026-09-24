@@ -1,0 +1,42 @@
+Name:           prayer
+Version:        1.0.0
+Release:        0
+Summary:        Islamic prayer time command-line utility
+License:        GPL-3.0-or-later
+URL:            @PROJECT_URL@
+Source0:        %{url}/releases/download/v%{version}/%{name}-%{version}.tar.gz
+BuildRequires:  gcc
+BuildRequires:  make
+BuildRequires:  pkgconfig
+BuildRequires:  libmuslim-devel
+BuildRequires:  pkgconfig(libcjson) >= 1.7.13
+BuildRequires:  python3
+BuildRequires:  timezone
+Requires:       geome
+Requires:       timezone
+
+%description
+Calculate Islamic prayer times with libmuslim. Supports offline location
+configuration, optional IP-based detection with geome, current and next prayer
+windows, tabular Hijri dates, and JSON output.
+
+%prep
+%autosetup
+
+%build
+%make_build TOOLS=prayer SYSTEM_LIBMUSLIM=1 SYSTEM_CJSON=1 CFLAGS="%{optflags}" LDFLAGS="%{?build_ldflags}"
+
+%check
+%make_build check TOOLS=prayer SYSTEM_LIBMUSLIM=1 SYSTEM_CJSON=1 CFLAGS="%{optflags}" LDFLAGS="%{?build_ldflags}"
+
+%install
+%make_install TOOLS=prayer SYSTEM_LIBMUSLIM=1 SYSTEM_CJSON=1 PREFIX=%{_prefix} CFLAGS="%{optflags}" LDFLAGS="%{?build_ldflags}"
+
+%files
+%license LICENSE
+%license libmuslim/prayertimes.h libmuslim/hijri.h
+%doc README.md vendor/README.md examples/locations.json
+%{_bindir}/prayer
+%{_mandir}/man1/prayer.1%{?ext_man}
+
+%changelog

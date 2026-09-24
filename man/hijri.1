@@ -1,0 +1,51 @@
+.TH HIJRI 1 "September 2026" "hijri 1.0.0" "User Commands"
+.SH NAME
+hijri \- convert Gregorian and tabular Hijri dates using libmuslim
+.SH SYNOPSIS
+.B hijri
+.RI [ --today " | " "--from-gregorian DATE" " | " "--to-gregorian DATE" ]
+.RB [ --json ]
+.SH DESCRIPTION
+Convert civil dates using libmuslim's arithmetic tabular Hijri calendar,
+with its Friday epoch. This is not an Umm al-Qura or sighting-based calendar.
+Gregorian dates are proleptic Gregorian, including before October 1582.
+.SH OPTIONS
+.TP
+.B --today
+Convert today's date in the system timezone. This is the default.
+.TP
+.BI "--from-gregorian " YYYY-MM-DD
+Convert a Gregorian date to Hijri.
+.TP
+.BI "--to-gregorian " YYYY-MM-DD
+Interpret the input as Hijri and convert to Gregorian.
+.TP
+.B --json
+Print input and output objects, each with calendar and date fields.
+.TP
+.B --help
+Print usage and examples.
+.TP
+.B --version
+Print the version.
+.SH CONVENTIONS
+Exactly one conversion mode may be specified. Input must use YYYY-MM-DD,
+with valid month lengths and years 0001 through 9999. Both input and output
+must fit that range. Gregorian dates before 0622-07-19 produce a date before
+1 AH and are rejected. Dates change at civil midnight, not sunset.
+Calculated dates can differ from local religious observance.
+.PP
+Human output appends AH for Hijri and CE for Gregorian. JSON calendar values
+are hijri and gregorian. This program does not access the network.
+.SH EXIT STATUS
+0: success. 2: invalid usage, date or output range. 3: clock or I/O failure.
+.SH EXAMPLES
+.nf
+hijri --from-gregorian 2024-03-11
+1445-09-01 AH
+hijri --to-gregorian 1445-09-01
+2024-03-11 CE
+hijri --today --json
+.fi
+.SH SEE ALSO
+.BR prayer (1)
