@@ -63,6 +63,24 @@ linking for distro integration.
 ./prayer/prayer --auto --timezone America/New_York
 ```
 
+### Options
+
+| Option | Description |
+| --- | --- |
+| `--location CITY` | Use the exact city key from the offline locations configuration. With `--coordinates`, it labels the supplied coordinates. |
+| `--config FILE` | Read locations from a specific JSON configuration file. |
+| `--auto` | Obtain approximate public-IP coordinates through `geome --json`. |
+| `--coordinates LAT,LON` | Use offline latitude and longitude directly. |
+| `--timezone ZONE` | Set or override the IANA timezone, for example `America/New_York`. |
+| `--method ID` | Select a calculation method; `mwl` is the default. |
+| `--next` | Show the next prayer, including its date. |
+| `--current` | Show the active prayer window, or no window between sunrise and Dhuhr. Cannot be combined with `--next`. |
+| `--hijri` | Include today's tabular Hijri date in human-readable output. |
+| `--json` | Emit the full structured schedule as JSON. |
+| `--at SECONDS` | Calculate relative to an integer Unix timestamp; useful for reproducible output. |
+| `--help` | Show command usage without network access. |
+| `--version` | Show the program version. |
+
 Supported requested methods: `mwl` (default), `isna`, `ummalqura` (upstream
 `makkah`), `egypt`, `karachi`, `kemenag`, `gulf`, and `moonsighting`. Additional
 named upstream methods are also accepted; unknown/custom methods fail. The
@@ -156,6 +174,17 @@ inactive windows are JSON `null`; human times use `--:--` for unavailable events
 ./hijri/hijri --from-gregorian 2026-09-23
 ./hijri/hijri --to-gregorian 1448-04-10 --json
 ```
+
+### Options
+
+| Option | Description |
+| --- | --- |
+| `--today` | Convert today's system-local Gregorian date to tabular Hijri; this is the default. |
+| `--from-gregorian YYYY-MM-DD` | Convert a Gregorian date to tabular Hijri. |
+| `--to-gregorian YYYY-MM-DD` | Convert a tabular Hijri date to Gregorian. |
+| `--json` | Emit input and output calendar/date objects as JSON. |
+| `--help` | Show command usage and examples. |
+| `--version` | Show the program version. |
 
 No arguments means `--today`. Conversion modes are mutually exclusive. Dates
 must be exactly `YYYY-MM-DD`, with valid month lengths and years 0001-9999 in
